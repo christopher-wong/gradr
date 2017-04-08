@@ -5,8 +5,7 @@ import os
 
 from flask import Flask
 
-from controller.db_visual import db_visual_bp
-from controller.form import form_bp
+from .controller.form import form_bp
 from .model.model import model_bp
 
 app = Flask(__name__)
@@ -16,6 +15,5 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = os.urandom(24)
 
 # register blueprints
-app.register_blueprint(db_visual_bp)
 app.register_blueprint(form_bp)
 app.register_blueprint(model_bp)

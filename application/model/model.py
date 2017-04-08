@@ -3,4 +3,6 @@
 
 from flask import Flask, render_template, request, Blueprint, redirect, flash
 
+from pymongo import MongoClient
+
 model_bp = Blueprint('model', __name__)

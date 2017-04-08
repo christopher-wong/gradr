@@ -4,11 +4,11 @@ $(function () {
                 type: 'area'
             },
             title: {
-                text: 'US and USSR nuclear stockpiles'
+                text: 'This Chart Has No Value'
             },
             subtitle: {
-                text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                    'thebulletin.metapress.com</a>'
+                // text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
+                //     'thebulletin.metapress.com</a>'
             },
             xAxis: {
                 allowDecimals: false,

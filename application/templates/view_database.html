@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block title %} Database Visual View {% endblock %}
+
+{% block content %}
+    <body xmlns="http://www.w3.org/1999/html">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="/home"> Gradr</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/home">Home </a>
+                    </li>
+                    <li class="active">
+                        <a href="/view_database">View Database <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Assignment Type Breakdown</h2>
+        <p> This table represents all the assignment types and weights that have been added to the database</p>
+        <table class="table table-hover">
+            {% if results %}
+                <thead>
+                <tr>
+                    <th>Assignment Type</th>
+                    <th>Weight</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for item in results %}
+                    <tr>
+                        <td> {{ item.assignment_type }}</td>
+                        <td> {{ item.assignment_weight }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+    </div>
+
+    <form method="POST" action="/delete_assignment_type">
+        <div class="container">
+            <div class="form-group">
+                <div class="input-group col-md-4 col-md-offset-4">
+                    <label for="delete_assignment_type"> Delete Type</label>
+                </div>
+                <div class="input-group col-md-4 col-md-offset-4">
+                    <select class="form-control" id="delete_assignment_type" name="delete_assignment_type" required>
+                        <option class="placeholder" selected value=""> Select type</option>
+
+                        {% if results %}
+                            {% for item in results %}
+                                <option value = {{ item.assignment_type }}>{{ item.assignment_type }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group col-md-4 col-md-offset-4">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+{% endblock %}

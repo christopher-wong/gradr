@@ -124,7 +124,19 @@ def db_update_assignment_weight():
 
     db = db_connect()
 
-    db.assignmentType.update({'assignment_type': typeToUpdate}, {'$set': {'assignment_weight': weightToUpdate}})
+    type = db_retrive_assignment_type()
+
+    for document in type:
+        if document['assignment_type'] == typeToUpdate:
+            old = document['assignment_weight']
+
+    difference = int(weightToUpdate) - int(old)
+    totalWeight = db_get_total_weight() + difference
+
+    if totalWeight <= 100:
+        db.assignmentType.update({'assignment_type': typeToUpdate}, {'$set': {'assignment_weight': weightToUpdate}})
+    else:
+        flash("Total Weight Cannot Exceed 100")
 
     return redirect('/view_database')
 

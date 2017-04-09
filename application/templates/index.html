@@ -68,9 +68,7 @@
                     <label for="assignment_weight">Weight</label>
                 </div>
                 <div class="input-group col-md-4 col-md-offset-4">
-                    {% if originalWeight %}
                         <span class="label label-info">Remaining: {{ (100 - originalWeight) }}%</span>
-                    {% endif %}
                 </div>
                 <div class="input-group col-md-4 col-md-offset-4">
                     <input type="number" step="any" name="assignment_weight" id="assignment_weight" class="form-control"

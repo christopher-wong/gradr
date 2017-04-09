@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block title %} Database JSON View{% endblock %}
+
+{% block content %}
+    <body>
+    </br>
+
+    <div class="container">
+        </br>
+    </div>
+
+    <div class="container">
+        <div class="form-group">
+            <label for="raw json view">Raw JSON </label>
+            <textarea class="form-control" rows="10" id="json">{{ results }}</textarea>
+        </div>
+    </div>
+
+    </br>
+
+    <div class="container">
+        </br>
+    </div>
+
+    <div class="container">
+        <form method="POST" action="/return">
+            <input class="btn btn-success" type="submit" value="Back">
+        </form>
+    </div>
+    </body>
+
+{% endblock %}

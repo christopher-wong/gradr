@@ -3,6 +3,8 @@
 
 from flask import render_template, request, Blueprint, redirect, flash
 from pymongo import MongoClient
+from bson import Binary, Code
+from bson.json_util import dumps
 
 form_bp = Blueprint('form_controller', __name__)
 
@@ -61,9 +63,7 @@ def db_retrive_assignment_type():
 
 @form_bp.route('/')
 def index():
-    db_connect()
-
-    return redirect('/home')
+    return render_template('login.html')
 
 
 @form_bp.route('/home')
@@ -150,3 +150,18 @@ def db_get_total_weight():
         originalWeight = originalWeight + int((document['assignment_weight']))
 
     return originalWeight
+
+
+@form_bp.route('/view_raw', methods=["POST"])
+def db_view_raw():
+    results = db_retrive_assignment_type()
+
+    # for item in results:
+    #     print (results)
+
+    return render_template('raw_data.html', results=results)
+
+
+@form_bp.route('/return', methods=['POST'])
+def return_post():
+    return redirect('/view_database')

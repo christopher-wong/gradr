@@ -60,9 +60,8 @@
             {% endif %}
         </table>
     </div>
-
-    <form method="POST" action="/delete_assignment_type">
-        <div class="container">
+    <div class="container">
+        <form method="POST" action="/delete_assignment_type">
             <div class="input-group">
                 <label for="delete_assignment_type"> Delete Type</label>
             </div>
@@ -84,7 +83,42 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
+    <div class="container">
+        </br>
+    </div>
+
+    <div class="container">
+        <form method="POST" action="/update_assignment_type">
+            <div class="input-group">
+                <label for="update_assignment_type">Update Weight</label>
+            </div>
+            <div class="form-inline">
+                <div class="input-group">
+                    <select class="form-control" id="update_assignment_type" name="update_assignment_type" required>
+                        <option class="placeholder" selected value=""> Select type</option>
+
+                        {% if results %}
+                            {% for item in results %}
+                                <option value= {{ item.assignment_type }}>{{ item.assignment_type }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <input type="number" step="any" name="assignment_weight" id="assignment_weight" class="form-control"
+                           placeholder="25" aria-label="assignment_weight" min="0" max="100" required>
+                    <span class="input-group-addon">%</span>
+                </div>
+                <div class="input-group">
+                    <div class="input-group">
+                        <input class="btn btn-primary" type="submit" value="Update">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}

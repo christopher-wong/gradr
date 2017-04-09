@@ -23,7 +23,18 @@ def db_insert_assignment_type(formInputs):
     a_type = "assignment_type"
     weight = "assignment_weight"
 
-    if a_type in formInputs and weight in formInputs:
+    results = db_retrive_assignment_type()
+
+    s = set()
+
+    for document in results:
+        s.add(document['assignment_type'])
+        print(len(s))
+
+    if formInputs['assignment_type'] in s:
+        flash("This Assignment Type already exists")
+
+    elif a_type in formInputs and weight in formInputs:
 
         try:
             db.assignmentType.insert({
@@ -51,26 +62,35 @@ def db_retrive_assignment_type():
 
 @form_bp.route('/')
 def index():
-    db_connect()
 
     return redirect('/home')
 
 
 @form_bp.route('/home')
 def home():
-    return render_template('index.html')
+    originalWeight = db_get_total_weight()
+    return render_template('index.html', originalWeight=originalWeight)
 
 
 @form_bp.route('/submit', methods=['POST'])
 def submit():
+    originalWeight = db_get_total_weight()
+
+
     # get inputs from form as dict
     if request.method == 'POST':
         formInputs = request.form.to_dict()
 
-    db_insert_assignment_type(formInputs)
+    updatedWeight = originalWeight + int(formInputs['assignment_weight'])
 
-    return render_template('index.html',
-                           formInputs=formInputs)
+    print(updatedWeight)
+
+    if updatedWeight <= 100:
+        db_insert_assignment_type(formInputs)
+    else:
+        flash("Sum of Weights Cannot Exceed 100")
+
+    return render_template('index.html', originalWeight=originalWeight)
 
 
 @form_bp.route('/view_database')
@@ -93,3 +113,15 @@ def db_remove_assignment_type():
     db.assignmentType.remove({'assignment_type': a_type})
 
     return redirect('/view_database')
+
+
+def db_get_total_weight():
+    results = db_retrive_assignment_type()
+
+    originalWeight = 0
+
+    for document in results:
+        # originalWeight = originalWeight + document.assignment_weight
+        originalWeight = originalWeight + int((document['assignment_weight']))
+
+    return originalWeight

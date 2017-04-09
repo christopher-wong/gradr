@@ -86,8 +86,8 @@ def db_remove_assignment_type():
     if request.method =='POST':
         formInputs = request.form.to_dict()
 
+    print(formInputs)
     a_type = formInputs['delete_assignment_type']
-    print(a_type)
 
     db = db_connect()
     db.assignmentType.remove({'assignment_type': a_type})

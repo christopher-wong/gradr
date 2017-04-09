@@ -29,7 +29,6 @@ def db_insert_assignment_type(formInputs):
 
     for document in results:
         s.add(document['assignment_type'])
-        print(len(s))
 
     if formInputs['assignment_type'] in s:
         flash("This Assignment Type already exists")
@@ -69,8 +68,8 @@ def index():
 
 @form_bp.route('/home')
 def home():
-    originalWeight = db_get_total_weight()
-    return render_template('index.html', originalWeight=originalWeight)
+    updatedWeight = db_get_total_weight()
+    return render_template('index.html', updatedWeight=updatedWeight)
 
 
 @form_bp.route('/submit', methods=['POST'])
@@ -82,14 +81,16 @@ def submit():
     if request.method == 'POST':
         formInputs = request.form.to_dict()
 
-    updatedWeight = originalWeight + int(formInputs['assignment_weight'])
+    projectedWeight = originalWeight + int(formInputs['assignment_weight'])
 
-    if updatedWeight <= 100:
+    if projectedWeight <= 100:
         db_insert_assignment_type(formInputs)
     else:
         flash("Sum of Weights Cannot Exceed 100")
 
-    return render_template('index.html', originalWeight=originalWeight)
+    updatedWeight = db_get_total_weight()
+
+    return render_template('index.html', updatedWeight=updatedWeight)
 
 
 @form_bp.route('/view_database')
@@ -112,6 +113,20 @@ def db_remove_assignment_type():
 
     return redirect('/view_database')
 
+
+@form_bp.route('/update_assignment_type', methods=['POST'])
+def db_update_assignment_weight():
+    if request.method == 'POST':
+        formInputs = request.form.to_dict()
+
+    typeToUpdate = formInputs['update_assignment_type']
+    weightToUpdate = formInputs['assignment_weight']
+
+    db = db_connect()
+
+    db.assignmentType.update({'assignment_type': typeToUpdate}, {'$set': {'assignment_weight': weightToUpdate}})
+
+    return redirect('/view_database')
 
 def db_get_total_weight():
     results = db_retrive_assignment_type()

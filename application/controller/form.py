@@ -61,6 +61,19 @@ def db_retrive_assignment_type():
     return results
 
 
+def db_retrive_assignments():
+    db = db_connect();
+
+    cursor = db.assignment.find();
+
+    results = []
+
+    for document in cursor:
+        results.append(document)
+
+    return results
+
+
 @form_bp.route('/')
 def index():
     return render_template('login.html')
@@ -75,7 +88,6 @@ def home():
 @form_bp.route('/submit', methods=['POST'])
 def submit():
     originalWeight = db_get_total_weight()
-
 
     # get inputs from form as dict
     if request.method == 'POST':
@@ -95,21 +107,37 @@ def submit():
 
 @form_bp.route('/view_database')
 def view_database():
-    results = db_retrive_assignment_type()
+    assignment_weight_table = db_retrive_assignment_type()
+    assignments = db_retrive_assignments()
 
-    return render_template('view_database.html', results=results)
+    return render_template('view_database.html',
+                           assignment_weight_table=assignment_weight_table,
+                           assignments=assignments)
 
 
 @form_bp.route('/delete_assignment_type', methods=['POST'])
 def db_remove_assignment_type():
-
-    if request.method =='POST':
+    if request.method == 'POST':
         formInputs = request.form.to_dict()
 
     a_type = formInputs['delete_assignment_type']
 
     db = db_connect()
     db.assignmentType.remove({'assignment_type': a_type})
+
+    return redirect('/view_database')
+
+
+@form_bp.route('/delete_assignment', methods=['POST'])
+def db_remove_assignment():
+    if request.method == 'POST':
+        formInputs = request.form.to_dict()
+
+    a_name = formInputs['delete_assignment']
+    print(formInputs)
+
+    db = db_connect()
+    db.assignment.remove({'name': a_name})
 
     return redirect('/view_database')
 
@@ -140,6 +168,7 @@ def db_update_assignment_weight():
 
     return redirect('/view_database')
 
+
 def db_get_total_weight():
     results = db_retrive_assignment_type()
 
@@ -164,4 +193,67 @@ def db_view_raw():
 
 @form_bp.route('/return', methods=['POST'])
 def return_post():
+    return redirect('/view_database')
+
+
+@form_bp.route('/add_assignment', methods=['POST'])
+def add_assignment():
+    if request.method == 'POST':
+        formInputs = request.form.to_dict()
+
+    db = db_connect();
+    db.assignment.insert({
+        'user_id': '0001',
+        'name': formInputs['assignment_name'],
+        'type': formInputs['assignment_type'],
+        'score': formInputs['assignment_score']
+    })
+
+    flash("Assignment insert successful")
+
+    return redirect('/home')
+
+
+@form_bp.route('/stats')
+def render_stats():
+    db = db_connect();
+
+    categories = db_retrive_assignment_type()
+
+    # get the assignment table
+    results = db.assignment.find();
+
+    # get count for each category
+    homework_count = db.assignment.find({'type': 'homework'}).count()
+    quiz_count = db.assignment.find({'type': 'quiz'}).count()
+    exam_count = db.assignment.find({'type': 'exam'}).count()
+
+    homework_total = 0
+    quiz_total = 0;
+    exam_total = 0
+
+    # sum each category
+    for item in results:
+        if item['type'] == 'homework':
+            homework_total += item['score']
+        elif item['type'] == 'quiz':
+            quiz_total += item['score']
+        elif item['type'] == 'exam':
+            exam_total += item['score']
+
+    homework_avg = homework_total / homework_count
+    quiz_avg = quiz_total / quiz_count
+    exam_avg = exam_total / exam_count
+
+    print(categories)
+
+    return render_template('stats.html');
+
+
+@form_bp.route('/destroy', methods=['POST'])
+def destroy():
+    db = db_connect()
+    db.assignment.drop()
+    db.assignmentType.drop()
+
     return redirect('/view_database')

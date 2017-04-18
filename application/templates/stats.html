@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block title %}Stats{% endblock %}
+
+{% block content %}
+
+    <body>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="/"> Gradr</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/home">Home</a>
+                    </li>
+                    <li>
+                        <a href="/view_database">View Database</a>
+                    </li>
+                    <li class="active">
+                        <a href="/stats"><span class="sr-only">(current)</span> Stats</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="col-md-4">
+        <div class="well well-lg">
+            <h1>hello world</h1>
+        </div>
+    </div>
+
+    {#    <!-- Chart Containers -->#}
+    {#    <div class="container">#}
+    {#        <div id="cool" style="min-width: 400px; height: 310px; margin: 0 auto"></div>#}
+    {#    </div>#}
+
+    <div class="container">
+        <div style="width: 600px; height: 400px; margin: 0 auto">
+            <div id="container-speed" style="width: 300px; height: 200px; float: left"></div>
+        </div>
+    </div>
+
+
+    <!-- Charts -->
+    <script src="{{ url_for('static', filename='charts/peer-comparison.js') }}"></script>
+    {#    <script src="{{ url_for('static', filename='charts/cool.js') }}"></script>#}
+
+
+{% endblock %}

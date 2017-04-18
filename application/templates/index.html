@@ -30,72 +30,91 @@
                         <a href="/view_database">View Database</a>
                     </li>
                     <li>
-                        <a href="/about">About</a>
+                        <a href="/stats">Stats</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info alert-dismissable align-center">
+                <div class="col-md-4">
+                    <ul class=flashes>
+                        {% for message in messages %}
+                            <li list-group-item-success>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <form method="POST" action="/submit">
-        <div class="container">
-            <div class="form-group">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul class=flashes>
-                            {% for message in messages %}
-                                <li list-group-item-success>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
+        <div class="form-group">
+            <div class="input-group col-md-2 col-md-offset-5">
+                <label for="assignment_type">Assignment Type</label>
             </div>
-            <div class="form-group">
-                <div class="input-group col-md-4 col-md-offset-4">
-                    <label for="assignment_type">Assignment Type</label>
-                </div>
-                <div class="input-group col-md-4 col-md-offset-4">
-                    <select class="form-control" id="assignment_type" name="assignment_type" required>
-                        <option class="placeholder" selected value="">Select type</option>
-                        <option value="homework">Homework</option>
-                        <option value="quiz">Quiz</option>
-                        <option value="exam">Exam</option>
-                    </select>
-                </div>
+            <div class="input-group col-md-2 col-md-offset-5">
+                <select class="form-control" id="assignment_type" name="assignment_type" required>
+                    <option class="placeholder" selected value="">Select type</option>
+                    <option value="homework">Homework</option>
+                    <option value="quiz">Quiz</option>
+                    <option value="exam">Exam</option>
+                </select>
             </div>
-            <div class="form-inline">
-                <div class="input-group col-md-4 col-md-offset-4">
-                    <label for="assignment_weight">Weight</label>
-                </div>
-                <div class="input-group col-md-4 col-md-offset-4">
-                    <span class="label label-info">Remaining: {{ (100 - updatedWeight) }}%</span>
-                </div>
-                <div class="input-group col-md-4 col-md-offset-4">
-                    <input type="number" step="any" name="assignment_weight" id="assignment_weight" class="form-control"
-                           placeholder="25" aria-label="assignment_weight" min="0" max="100" required>
-                    <span class="input-group-addon">%</span>
-                </div>
+        </div>
+        <div class="form-inline">
+            <div class="input-group col-md-2 col-md-offset-5">
+                <label for="assignment_weight">Weight</label>
             </div>
-            <div class="form-group">
-                <div class="input-group col-md-4 col-md-offset-4">
-                    <input class="btn btn-success" type="submit" value="Submit">
-                </div>
+            <div class="input-group col-md-2 col-md-offset-5">
+                <span class="label label-info">Remaining: {{ (100 - updatedWeight) }}%</span>
             </div>
+            <div class="input-group col-md-2 col-md-offset-5">
+                <input type="number" step="any" name="assignment_weight" id="assignment_weight" class="form-control"
+                       placeholder="25" aria-label="assignment_weight" min="0" max="100" required>
+                <span class="input-group-addon">%</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group col-md-2 col-md-offset-5">
+                <input class="btn btn-success" type="submit" value="Submit">
+            </div>
+        </div>
         </div>
     </form>
 
-    {#    <div class="container">#}
-    {#        <div id="nukes" style="min-width: 310px; height: 400px; margin: 0 auto"></div>#}
-    {#    </div>#}
-    {##}
-    {#    <div class="container">#}
-    {#        <div id="cool" style="min-width: 400px; height: 310px; margin: 0 auto"></div>#}
-    {#    </div>#}
-
-
-    <!-- Charts -->
-    {#    <script src="{{ url_for('static', filename='charts/nukes.js') }}"></script>#}
-    {#    <script src="{{ url_for('static', filename='charts/cool.js') }}"></script>#}
+    <div class="well well">
+        <div class="container text-center">
+            <form class="form-inline" method="post" action="/add_assignment">
+                <div class="form-group">
+                    <label for="assignment_name">Assignment Info</label>
+                    <input type="text" class="form-control" name="assignment_name" id="assignment_name"
+                           placeholder="Problem Set #1">
+                </div>
+                <div class="input-group col-xs-2">
+                    <input type="number" step="any" name="assignment_score" id="assignment_score" class="form-control"
+                           placeholder="85" aria-label="assignment_weight" min="0" max="100" required>
+                    <span class="input-group-addon">%</span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control" name="assignment_type" id="assignment_type" required>
+                            <option class="placeholder" selected value="">Select type</option>
+                            <option value="homework">Homework</option>
+                            <option value="quiz">Quiz</option>
+                            <option value="exam">Exam</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-success" type="submit" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
 
     </body>
 {% endblock %}

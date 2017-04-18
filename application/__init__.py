@@ -6,7 +6,6 @@ import os
 from flask import Flask
 
 from .controller.form import form_bp
-from .model.model import model_bp
 
 app = Flask(__name__)
 # allow clean page on each refresh
@@ -16,4 +15,3 @@ app.secret_key = os.urandom(24)
 
 # register blueprints
 app.register_blueprint(form_bp)
-app.register_blueprint(model_bp)

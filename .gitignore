@@ -1,2 +1,2 @@
 .idea/
-application/controller/__pycache__/
+*.pyc 

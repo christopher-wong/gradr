@@ -236,17 +236,17 @@ def get_weights():
     if homework_weight_cursor.count() > 0:
         weights.append(int(list(homework_weight_cursor)[0]['assignment_weight']))
     else:
-        weights.append(1);
+        weights.append(0);
 
     if quiz_weight_cursor.count() > 0:
         weights.append(int(list(quiz_weight_cursor)[0]['assignment_weight']))
     else:
-        weights.append(1);
+        weights.append(0);
 
     if exam_weight_cursor.count() > 0:
         weights.append(int(list(exam_weight_cursor)[0]['assignment_weight']))
     else:
-        weights.append(1);
+        weights.append(0);
 
     return weights
 

@@ -38,9 +38,22 @@
         </div>
     </nav>
 
-    <div class="col-md-4">
-        <div class="well well-lg">
-            <h1>hello world</h1>
+    <div class="text-center col-lg-12">
+        <div class="well well-sm">
+            <h1>Grade Statistics</h1>
+
+            {% if homework_avg %}
+                <p><strong>Homework Mean: </strong>{{ homework_avg }}%</p>
+            {% endif %}
+
+            {% if quiz_avg %}
+                <p><strong>Quiz Mean: </strong>{{ quiz_avg }}%</p>
+            {% endif %}
+
+            {% if exam_avg %}
+                <p><strong>Exam Mean: </strong>{{ exam_avg }}%</p>
+            {% endif %}
+
         </div>
     </div>
 
@@ -49,12 +62,11 @@
     {#        <div id="cool" style="min-width: 400px; height: 310px; margin: 0 auto"></div>#}
     {#    </div>#}
 
-    <div class="container">
-        <div style="width: 600px; height: 400px; margin: 0 auto">
+    <div class="center">
+        <div style="width: 300px; height: 400px; margin: 0 auto">
             <div id="container-speed" style="width: 300px; height: 200px; float: left"></div>
         </div>
     </div>
-
 
     <!-- Charts -->
     <script src="{{ url_for('static', filename='charts/peer-comparison.js') }}"></script>

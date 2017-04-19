@@ -3,8 +3,7 @@
 
 from flask import render_template, request, Blueprint, redirect, flash
 from pymongo import MongoClient
-from bson import Binary, Code
-from bson.json_util import dumps
+import numpy as np
 
 form_bp = Blueprint('form_controller', __name__)
 
@@ -61,7 +60,7 @@ def db_retrive_assignment_type():
     return results
 
 
-def db_retrive_assignments():
+def db_retrieve_assignments():
     db = db_connect();
 
     cursor = db.assignment.find();
@@ -108,7 +107,7 @@ def submit():
 @form_bp.route('/view_database')
 def view_database():
     assignment_weight_table = db_retrive_assignment_type()
-    assignments = db_retrive_assignments()
+    assignments = db_retrieve_assignments()
 
     return render_template('view_database.html',
                            assignment_weight_table=assignment_weight_table,
@@ -216,38 +215,41 @@ def add_assignment():
 
 @form_bp.route('/stats')
 def render_stats():
-    db = db_connect();
+    homework_scores = []
+    quiz_scores = []
+    exam_scores = []
 
-    categories = db_retrive_assignment_type()
+    db = db_connect();
 
     # get the assignment table
     results = db.assignment.find();
 
-    # get count for each category
-    homework_count = db.assignment.find({'type': 'homework'}).count()
-    quiz_count = db.assignment.find({'type': 'quiz'}).count()
-    exam_count = db.assignment.find({'type': 'exam'}).count()
-
-    homework_total = 0
-    quiz_total = 0;
-    exam_total = 0
-
     # sum each category
     for item in results:
+
         if item['type'] == 'homework':
-            homework_total += item['score']
+            homework_scores.append(int(item['score']))
         elif item['type'] == 'quiz':
-            quiz_total += item['score']
+            quiz_scores.append(int(item['score']))
         elif item['type'] == 'exam':
-            exam_total += item['score']
+            exam_scores.append(int(item['score']))
 
-    homework_avg = homework_total / homework_count
-    quiz_avg = quiz_total / quiz_count
-    exam_avg = exam_total / exam_count
+    homework_avg = np.mean(homework_scores)
+    quiz_avg = np.mean(quiz_scores)
+    exam_avg = np.mean(exam_scores)
 
-    print(categories)
+    # if NaN, set to 0
+    if np.isnan(homework_avg):
+        homework_avg = 0
+    if np.isnan(quiz_avg):
+        quiz_avg = 0
+    if np.isnan(exam_avg):
+        exam_avg = 0
 
-    return render_template('stats.html');
+    return render_template('stats.html',
+                           homework_avg=homework_avg,
+                           quiz_avg=quiz_avg,
+                           exam_avg=exam_avg);
 
 
 @form_bp.route('/destroy', methods=['POST'])

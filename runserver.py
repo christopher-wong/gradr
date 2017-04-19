@@ -2,7 +2,6 @@
 # !/usr/bin/python
 
 import os
-
 from application import app
 
 # Run the app

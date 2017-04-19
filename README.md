@@ -8,10 +8,14 @@ across any device. We’ll also (time permitting) display deep analytics based o
 allow students to see how they’re stacking up to their peers.
  
 ### Starting the Web Server:
-1) Ensure mongodb is running by typing `mongo` and catching the shell.
-2) run `python runserver.py`.
-3) begin by entering assignment categories and then corresponding assignments. The necessary databases and collections
+Dependencies: `Python 3.5.1` or higher
+1) Ensure mongodb is running by typing `mongo` and catching the shell
+2) Run `pip install -r requirements.txt`
+3) Run `python runserver.py`
+4) Begin by entering assignment categories and corresponding assignments. The necessary databases and collections
 will be generated on the fly.
+5) Visit the 'View Databases' tab to view/update the database in table form
+6) View statistics
 
 ## User features:
 * Sign-up via OAUTH (disabled for demo / debugging)
@@ -19,12 +23,13 @@ will be generated on the fly.
 * Add/remove assignments and grades
 * Add major and year of graduation (not currently available)
 
+
 ## UI features:
 * fully responsive and mobile-friendly (device agnostic)
 * clean modern design language (fast!)
 
 ## Future features:
-* peer comparison
+* peer comparison (the chart is implemented with canned data)
 * auto-import from Bottlenose (CCIS grading system)
 * deep analytics
 

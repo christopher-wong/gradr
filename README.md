@@ -5,7 +5,13 @@ Grades are the number one thing on the minds of any student. The current means o
 outdated, confusing, and difficult to use. Enter Gradr, a modern and fully responsive web-based grade tracking 
 application. Gradr will allow users to sign up using their Husky emails, enter their grades, and track their progress 
 across any device. We’ll also (time permitting) display deep analytics based on aggregated and anonymized user data to 
-allow students to see how they’re stacking up to their peers. 
+allow students to see how they’re stacking up to their peers.
+ 
+### Starting the Web Server:
+1) Ensure mongodb is running by typing `mongo` and catching the shell.
+2) run `python runserver.py`.
+3) begin by entering assignment categories and then corresponding assignments. The necessary databases and collections
+will be generated on the fly.
 
 ## User features:
 * Sign-up via OAUTH (disabled for demo / debugging)

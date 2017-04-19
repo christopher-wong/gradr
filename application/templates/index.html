@@ -40,13 +40,11 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="alert alert-info align-center">
-                <div class="col-md-4">
                     <ul class=flashes>
                         {% for message in messages %}
                             <li list-group-item-success>{{ message }}</li>
                         {% endfor %}
                     </ul>
-                </div>
             </div>
         {% endif %}
     {% endwith %}

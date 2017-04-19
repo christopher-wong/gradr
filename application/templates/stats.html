@@ -54,6 +54,16 @@
                 <p><strong>Exam Mean: </strong>{{ exam_avg }}%</p>
             {% endif %}
 
+            {% if homework_avg %}
+                {% if quiz_avg %}
+                    {% if exam_avg %}
+                        <p class="lead"><strong>Weighted Average: </strong>{{ weighted_avg }}%</p>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            <p>
+                <small> *weighted average only calculated if all assignment categories are being tracked*</small>
+            </p>
         </div>
     </div>
 

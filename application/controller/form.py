@@ -213,6 +213,45 @@ def add_assignment():
     return redirect('/home')
 
 
+def get_weights():
+    db = db_connect();
+
+    # store weights in list
+    # [0] homework
+    # [1] quiz
+    # [2] exam
+
+    # declare list of all weights
+    weights = []
+
+    # fetch all weights
+    homework_weight_cursor = db.assignmentType.find(
+        {'assignment_type': 'homework'}, {'assignment_weight': 1, '_id': 0})
+    quiz_weight_cursor = db.assignmentType.find(
+        {'assignment_type': 'quiz'}, {'assignment_weight': 1, '_id': 0})
+    exam_weight_cursor = db.assignmentType.find(
+        {'assignment_type': 'exam'}, {'assignment_weight': 1, '_id': 0})
+
+    # add all weights to list
+    if homework_weight_cursor.count() > 0:
+        weights.append(int(list(homework_weight_cursor)[0]['assignment_weight']))
+    else:
+        weights.append(1);
+
+    if quiz_weight_cursor.count() > 0:
+        weights.append(int(list(quiz_weight_cursor)[0]['assignment_weight']))
+    else:
+        weights.append(1);
+
+    if exam_weight_cursor.count() > 0:
+        weights.append(int(list(exam_weight_cursor)[0]['assignment_weight']))
+    else:
+        weights.append(1);
+
+    return weights
+
+
+# right now this is hard coded to support only 3 categories, would be cool to support more..
 @form_bp.route('/stats')
 def render_stats():
     homework_scores = []
@@ -222,11 +261,10 @@ def render_stats():
     db = db_connect();
 
     # get the assignment table
-    results = db.assignment.find();
+    grades = db.assignment.find();
 
     # sum each category
-    for item in results:
-
+    for item in grades:
         if item['type'] == 'homework':
             homework_scores.append(int(item['score']))
         elif item['type'] == 'quiz':
@@ -234,6 +272,7 @@ def render_stats():
         elif item['type'] == 'exam':
             exam_scores.append(int(item['score']))
 
+    # calculate average for each category
     homework_avg = np.mean(homework_scores)
     quiz_avg = np.mean(quiz_scores)
     exam_avg = np.mean(exam_scores)
@@ -246,10 +285,13 @@ def render_stats():
     if np.isnan(exam_avg):
         exam_avg = 0
 
+    weighted_avg = np.average([homework_avg, quiz_avg, exam_avg], weights=get_weights())
+
     return render_template('stats.html',
                            homework_avg=homework_avg,
                            quiz_avg=quiz_avg,
-                           exam_avg=exam_avg);
+                           exam_avg=exam_avg,
+                           weighted_avg=weighted_avg);
 
 
 @form_bp.route('/destroy', methods=['POST'])
